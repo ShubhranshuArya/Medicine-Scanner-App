@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gsheets/gsheets.dart';
+import 'package:medicine_scanner/screens/medicine_detail_page.dart';
 import 'package:medicine_scanner/screens/qr_scanner_page.dart';
 
- main()  {
-  
+main() {
   runApp(const MyApp());
 }
 
@@ -18,7 +18,6 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: QrScannerPage(),
-      // home: Container(),
     );
   }
 }

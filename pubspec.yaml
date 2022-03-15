@@ -30,9 +30,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  qr_code_scanner: ^0.7.0  
-  google_fonts: ^2.3.1
+  qr_code_scanner: 
+  google_fonts: 
   gsheets:
+  dio:
 
 
   # The following adds the Cupertino Icons font to your application.

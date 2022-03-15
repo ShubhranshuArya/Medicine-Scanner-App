@@ -1,7 +1,9 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:medicine_scanner/screens/medicine_detail_page.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QrScannerPage extends StatefulWidget {
@@ -60,20 +62,31 @@ class _QrScannerPageState extends State<QrScannerPage> {
         key: qrKey,
         onQRViewCreated: onQRViewCreated,
         overlay: QrScannerOverlayShape(
-            cutOutSize: MediaQuery.of(context).size.width * 0.72,
-            borderWidth: 12,
-            borderLength: 24,
-            borderRadius: 10,
-            borderColor: Colors.yellow,
-            overlayColor: Colors.blueAccent),
+          cutOutSize: MediaQuery.of(context).size.width * 0.72,
+          borderWidth: 12,
+          borderLength: 24,
+          borderRadius: 10,
+          borderColor: Colors.yellow,
+          overlayColor: Colors.blueAccent,
+        ),
       );
 
   void onQRViewCreated(QRViewController controller) {
     setState(() => this.controller = controller);
 
-    controller.scannedDataStream.listen((barcode) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(barcode.code ?? 'Null')));
-    });
+    controller.scannedDataStream.listen(
+      (barcode) {
+        // TODO: 10 sec timer and navigate to (invalid qr)(no qr detected)
+        
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MedicineDetailPage(
+              barcode: int.parse(barcode.code ?? '-1'),
+            ),
+          ),
+        );
+      },
+    );
   }
 }
