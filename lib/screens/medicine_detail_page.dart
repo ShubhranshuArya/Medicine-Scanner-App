@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:medicine_scanner/model/medicine_model.dart';
+import 'package:medicine_scanner/screens/qr_scanner_page.dart';
 import 'package:medicine_scanner/services/google_sheet_services.dart';
 
 class MedicineDetailPage extends StatefulWidget {
@@ -20,7 +21,7 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
   MedicineModel? medicineData;
   bool isFetched = false;
   bool isValid = false;
-  bool isNetConnected = false;
+  bool isConnected = false;
 
   @override
   void initState() {
@@ -40,21 +41,18 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
     }
   }
 
-  void checkInternetConnectivity() async {
-    bool connectivity;
-    connectivity = await InternetConnectionChecker().hasConnection;
-    setState(() {
-      isNetConnected = connectivity;
-    });
-    if (isNetConnected) {
-      if (widget.barcode != -1) {
-        fetchData();
-      }
-    }
-  }
-
   String listToSentence(sideEffects) {
     return sideEffects.join(', ');
+  }
+
+  checkInternetConnectivity() async {
+    bool result = await InternetConnectionChecker().hasConnection;
+    setState(() {
+      isConnected = result;
+    });
+    if (isConnected && widget.barcode != -1) {
+      fetchData();
+    }
   }
 
   @override
@@ -65,7 +63,7 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: !isNetConnected
+        child: !isConnected
             ? Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -122,7 +120,7 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
                             height: 20,
                           ),
                           Text(
-                            'No QR Code\nDetected',
+                            'Invalid QR Code\nDetected',
                             style: GoogleFonts.montserrat(
                               color: Colors.blueAccent,
                               fontSize: size.aspectRatio * 60,

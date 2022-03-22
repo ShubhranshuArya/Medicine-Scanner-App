@@ -34,9 +34,9 @@ dependencies:
   google_fonts: 
   gsheets:
   dio:
-  internet_connection_checker:
   sqflite:
   intl:
+  internet_connection_checker:
 
 
   # The following adds the Cupertino Icons font to your application.

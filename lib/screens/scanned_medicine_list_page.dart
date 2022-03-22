@@ -70,7 +70,6 @@ class _ScannedMedicineListPageState extends State<ScannedMedicineListPage> {
                   )
                 : ListView.builder(
                     shrinkWrap: true,
-                    reverse: true,
                     itemCount: scannedMedicine.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Padding(
@@ -119,7 +118,7 @@ class _ScannedMedicineListPageState extends State<ScannedMedicineListPage> {
   Future refreshLocalMedData() async {
     setState(() => isLoading = true);
     this.scannedMedicine =
-        await MedicineDatabase.instance.readAllScannedMedicine();
+        await MedicineDatabase.instance.readAllScannedMedicine().then((value) => value.reversed.toList());
     setState(() => isLoading = false);
   }
 }
