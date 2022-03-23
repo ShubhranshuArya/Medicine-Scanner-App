@@ -21,11 +21,13 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
   MedicineModel? medicineData;
   bool isFetched = false;
   bool isValid = false;
-  bool isConnected = false;
+  // bool isConnected = false;
 
   @override
   void initState() {
-    checkInternetConnectivity();
+    if (widget.barcode != -1) {
+      fetchData();
+    }
     super.initState();
   }
 
@@ -45,15 +47,13 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
     return sideEffects.join(', ');
   }
 
-  checkInternetConnectivity() async {
-    bool result = await InternetConnectionChecker().hasConnection;
-    setState(() {
-      isConnected = result;
-    });
-    if (isConnected && widget.barcode != -1) {
-      fetchData();
-    }
-  }
+  // checkInternetConnectivity() async {
+  //   bool result = await InternetConnectionChecker().hasConnection;
+  //   setState(() {
+  //     isConnected = result;
+  //   });
+
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -63,45 +63,47 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: !isConnected
-            ? Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      "NO INTERNET\nCONNECTION",
-                      style: GoogleFonts.montserrat(
-                        color: Colors.blueAccent,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        checkInternetConnectivity();
-                      },
-                      child: Container(
-                        height: 50,
-                        width: 140,
-                        decoration: BoxDecoration(
-                          color: Colors.indigoAccent.withOpacity(0.8),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Center(
-                            child: Text(
-                          'Refresh',
-                          style: GoogleFonts.montserrat(
-                            color: Colors.white,
-                            fontSize: 22,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        )),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            : !isValid
+        child:
+            // !isConnected
+            // ? Center(
+            //     child: Column(
+            //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //       children: [
+            //         Text(
+            //           "NO INTERNET\nCONNECTION",
+            //           style: GoogleFonts.montserrat(
+            //             color: Colors.blueAccent,
+            //             fontSize: 24,
+            //             fontWeight: FontWeight.w600,
+            //           ),
+            //         ),
+            //         GestureDetector(
+            //           onTap: () {
+            //             checkInternetConnectivity();
+            //           },
+            //           child: Container(
+            //             height: 50,
+            //             width: 140,
+            //             decoration: BoxDecoration(
+            //               color: Colors.indigoAccent.withOpacity(0.8),
+            //               borderRadius: BorderRadius.circular(8),
+            //             ),
+            //             child: Center(
+            //                 child: Text(
+            //               'Refresh',
+            //               style: GoogleFonts.montserrat(
+            //                 color: Colors.white,
+            //                 fontSize: 22,
+            //                 fontWeight: FontWeight.w500,
+            //               ),
+            //             )),
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   )
+            // :
+            !isValid
                 ? Center(
                     child: Padding(
                       padding: EdgeInsets.only(
