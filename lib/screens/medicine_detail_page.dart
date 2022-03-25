@@ -21,13 +21,11 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
   MedicineModel? medicineData;
   bool isFetched = false;
   bool isValid = false;
-  // bool isConnected = false;
+  bool isConnected = false;
 
   @override
   void initState() {
-    if (widget.barcode != -1) {
-      fetchData();
-    }
+    checkInternetConnectivity();
     super.initState();
   }
 
@@ -47,13 +45,15 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
     return sideEffects.join(', ');
   }
 
-  // checkInternetConnectivity() async {
-  //   bool result = await InternetConnectionChecker().hasConnection;
-  //   setState(() {
-  //     isConnected = result;
-  //   });
-
-  // }
+  checkInternetConnectivity() async {
+    bool result = await InternetConnectionChecker().hasConnection;
+    setState(() {
+      isConnected = result;
+    });
+    if (widget.barcode != -1) {
+      fetchData();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,47 +63,60 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child:
-            // !isConnected
-            // ? Center(
-            //     child: Column(
-            //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //       children: [
-            //         Text(
-            //           "NO INTERNET\nCONNECTION",
-            //           style: GoogleFonts.montserrat(
-            //             color: Colors.blueAccent,
-            //             fontSize: 24,
-            //             fontWeight: FontWeight.w600,
-            //           ),
-            //         ),
-            //         GestureDetector(
-            //           onTap: () {
-            //             checkInternetConnectivity();
-            //           },
-            //           child: Container(
-            //             height: 50,
-            //             width: 140,
-            //             decoration: BoxDecoration(
-            //               color: Colors.indigoAccent.withOpacity(0.8),
-            //               borderRadius: BorderRadius.circular(8),
-            //             ),
-            //             child: Center(
-            //                 child: Text(
-            //               'Refresh',
-            //               style: GoogleFonts.montserrat(
-            //                 color: Colors.white,
-            //                 fontSize: 22,
-            //                 fontWeight: FontWeight.w500,
-            //               ),
-            //             )),
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //   )
-            // :
-            !isValid
+        child: !isConnected
+            ? Center(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top:height * 0.28,
+                    bottom: height * 0.1,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Icon(
+                        Icons.signal_wifi_connected_no_internet_4_outlined,
+                        color: Colors.blueAccent,
+                        size: size.aspectRatio * 240,
+                      ),
+                      SizedBox(
+                        height: height * 0.03,
+                      ),
+                      Text(
+                        "NO INTERNET\nCONNECTION",
+                        style: GoogleFonts.montserrat(
+                          color: Colors.blueAccent,
+                          fontSize: 28,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          checkInternetConnectivity();
+                        },
+                        child: Container(
+                          height: 50,
+                          width: 140,
+                          decoration: BoxDecoration(
+                            color: Colors.indigoAccent.withOpacity(0.8),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Center(
+                              child: Text(
+                            'Refresh',
+                            style: GoogleFonts.montserrat(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            : !isValid
                 ? Center(
                     child: Padding(
                       padding: EdgeInsets.only(

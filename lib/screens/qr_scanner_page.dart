@@ -65,21 +65,19 @@ class _QrScannerPageState extends State<QrScannerPage> {
               ),
             ),
           ),
-          // todo: remove test button in final.
-
-          TextButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MedicineDetailPage(
-                    barcode: 45,
-                  ),
-                ),
-              );
-            },
-            child: Text("Test Button"),
-          ),
+          // TextButton(
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => MedicineDetailPage(
+          //           barcode: 45,
+          //         ),
+          //       ),
+          //     );
+          //   },
+          //   child: Text("Test Button"),
+          // ),
           Positioned(
             bottom: 60,
             child: Text(
