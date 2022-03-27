@@ -71,7 +71,7 @@ class _QrScannerPageState extends State<QrScannerPage> {
           //       context,
           //       MaterialPageRoute(
           //         builder: (context) => MedicineDetailPage(
-          //           barcode: 45,
+          //           barcode: 109,
           //         ),
           //       ),
           //     );

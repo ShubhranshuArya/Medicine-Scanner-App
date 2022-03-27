@@ -19,7 +19,7 @@ class GoogleSheetServices {
       Iterable jsonString = response.data;
       List<MedicineModel> medicineModel =
           jsonString.map((e) => MedicineModel.fromJson(e)).toList();
-      addLocalMedData(medicineModel[0]);
+      // addLocalMedData(medicineModel[0]);
       return medicineModel[0];
     } on DioError catch (e) {
       print(e);

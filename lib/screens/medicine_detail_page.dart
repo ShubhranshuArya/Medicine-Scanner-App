@@ -22,6 +22,7 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
   bool isFetched = false;
   bool isValid = false;
   bool isConnected = false;
+  bool canSave = true;
 
   @override
   void initState() {
@@ -67,7 +68,7 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
             ? Center(
                 child: Padding(
                   padding: EdgeInsets.only(
-                    top:height * 0.28,
+                    top: height * 0.28,
                     bottom: height * 0.1,
                   ),
                   child: Column(
@@ -144,7 +145,13 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
                             textAlign: TextAlign.center,
                           ),
                           Spacer(),
-                          scanQrButton(size)
+                          scanQrButton(
+                            size: size,
+                            onTap: () {
+                              Navigator.pop(context);
+                              ScaffoldMessenger.of(context).clearSnackBars();
+                            },
+                          )
                         ],
                       ),
                     ),
@@ -380,7 +387,24 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
                                 ),
                               ],
                             ),
-                            scanQrButton(size),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                scanQrButton(
+                                  size: size,
+                                  title: "Save Details",
+                                  onTap: saveDetailsLocally,
+                                ),
+                                scanQrButton(
+                                  size: size,
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    ScaffoldMessenger.of(context)
+                                        .clearSnackBars();
+                                  },
+                                ),
+                              ],
+                            )
                           ],
                         ),
                       ),
@@ -388,12 +412,15 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
     );
   }
 
-  Widget scanQrButton(Size size) => InkWell(
+  Widget scanQrButton({
+    required Size size,
+    String title = 'Scan QR',
+    required void Function() onTap,
+  }) =>
+      InkWell(
         borderRadius: BorderRadius.circular(8),
         splashColor: Colors.blue,
-        onTap: () {
-          Navigator.pop(context);
-        },
+        onTap: onTap,
         child: Container(
           height: size.height * 0.072,
           width: size.width * 0.42,
@@ -402,14 +429,47 @@ class _MedicineDetailPageState extends State<MedicineDetailPage> {
             borderRadius: BorderRadius.circular(8),
           ),
           child: Center(
-              child: Text(
-            'Scan QR',
+            child: Text(
+              title,
+              style: GoogleFonts.montserrat(
+                color: Colors.white,
+                fontSize: size.aspectRatio * 48,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ),
+      );
+
+  void saveDetailsLocally() {
+    if (canSave) {
+      GoogleSheetServices().addLocalMedData(medicineData ?? MedicineModel());
+      showSnackBar(title: "Details Saved");
+      setState(() {
+        canSave = false;
+      });
+    } else {
+      showSnackBar(title: "Details Recorded");
+    }
+  }
+
+  showSnackBar({required String title}) =>
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            title,
             style: GoogleFonts.montserrat(
               color: Colors.white,
-              fontSize: size.aspectRatio * 48,
+              fontSize: 16,
               fontWeight: FontWeight.w500,
             ),
-          )),
+            textAlign: TextAlign.center,
+          ),
+          backgroundColor: Colors.black54,
+          shape: StadiumBorder(),
+          behavior: SnackBarBehavior.floating,
+          duration: Duration(seconds: 2),
+          margin: EdgeInsets.symmetric(horizontal: 100, vertical: 12),
         ),
       );
 }
