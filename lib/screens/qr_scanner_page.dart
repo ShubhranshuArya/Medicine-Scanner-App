@@ -1,7 +1,9 @@
 import 'dart:ffi';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:medicine_scanner/screens/developer_information_page.dart';
 import 'package:medicine_scanner/screens/medicine_detail_page.dart';
 import 'package:medicine_scanner/screens/scanned_medicine_list_page.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -65,19 +67,38 @@ class _QrScannerPageState extends State<QrScannerPage> {
               ),
             ),
           ),
-          // TextButton(
-          //   onPressed: () {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(
-          //         builder: (context) => MedicineDetailPage(
-          //           barcode: 109,
-          //         ),
-          //       ),
-          //     );
-          //   },
-          //   child: Text("Test Button"),
-          // ),
+          Positioned(
+            top: 40,
+            left: 20,
+            child: IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DeveloperInformationPage(),
+                  ),
+                );
+              },
+              icon: Icon(
+                CupertinoIcons.info_circle,
+                color: Colors.white,
+                size: 36,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MedicineDetailPage(
+                    barcode: 109,
+                  ),
+                ),
+              );
+            },
+            child: Text("Test Button"),
+          ),
           Positioned(
             bottom: 60,
             child: Text(
